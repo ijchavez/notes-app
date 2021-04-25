@@ -1,0 +1,54 @@
+//requiero express y lo guardo en una constante, me devuelve un objeto a almacenarlo en app
+const express = require('express');
+// path utilizamos path.join para unir directorios
+const path = require('path');
+const exphbs = require('express-handlebars');
+const methodOverride = require('method-override');
+const session = require('express-session');
+//Inicializacion
+
+const app = express();
+require('./database');
+// Settings >> configuraciones
+//Inicializo un puerto para usarlo luego, si existe un puerto que lo tome sino el 3000
+app.set('port', process.env.port || 3000);
+app.set('views', path.join(__dirname, 'views'));
+//son de handlebars entonces es .hbs, usando el modulo mas arriba con el require y declaro
+//el engine, es una funcion entonces la ejecuto con la siguiente configuracion:
+app.engine('.hbs', exphbs({
+    //creamos en views la plantilla principla layouts/main.js
+    defaultLayout: 'main',
+    // vamos indicando los directorios
+    layoutsDir: path.join(app.get('views'), 'layouts'),
+    partialsDir:path.join(app.get('views'), 'partials'),
+    extname: '.hbs'
+}))
+//utilizacion
+app.set('view engine', '.hbs');
+require('./database');
+// MDW >> funciones antes que lleguen al servidor o antes de llegar a las rutas
+// cuando un formulario me envia un dato lo puedo entender con:
+app.use(express.urlencoded({extended: false}));
+app.use(methodOverride('_method'));
+app.use(session({
+    //autenticar al usuario y salvarlo temporalmente
+    secret: 'mysecretapp',
+    resave: true,
+    saveUninitialized: true
+
+}))
+// Variables Globales >> variables que queremos que esten accesibles
+
+// Routes
+app.use(require('./routes/index'));
+app.use(require('./routes/notes'));
+app.use(require('./routes/users'));
+
+// Archivos estaticos
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Escucha al servidor
+app.listen(app.get('port'), () => {
+    console.log('Server on port', app.get('port'))
+
+});

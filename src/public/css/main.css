@@ -1,0 +1,38 @@
+body{
+    background: #1488CC;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2B32B2, #1488CC);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #2B32B2, #1488CC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+.links{
+    text-decoration: none;
+    font-size : 25px;
+    color:black;
+
+}
+.links:hover{
+    color:#007bff;
+    text-decoration:none;
+}
+nav{
+    margin-bottom: 5px;
+}
+.logo{
+    width: 30%;
+
+}
+.down {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    flex-direction: row-reverse;
+}
+.img{
+    border-radius: 50px;
+    /*obligatorio para que se vea la imagen*/
+    width: 50px;
+    height: 50px;
+    background-size: cover;
+    padding: 10px;
+  
+}

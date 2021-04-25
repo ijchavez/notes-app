@@ -1,0 +1,96 @@
+/*
+npm init --y >> crea y describe el proyecto node
+❯ npm init --y
+Wrote to /home/gerardo/Documentos/Global Mentoring Udemy/Javascript/repositorio/JavaScript/notes-app/package.json:
+
+{
+  "name": "notes-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+
+express framework de node, sencillo profesional
+express handlebar >> integrar motor de plantillas en express
+express session >> crea sesiones dentro del servidor
+method override >> extender funcionalidad de formularios
+mongoose >> modulo q une express con base de datos
+passport >> autenticar
+passpor_local >> autenticar
+bcryptjs >> convertir a hash, cifrando password
+connect-flash >> mensajes entre multiples vistas
+nodemon >> facilita el inicio del servidor
+
+130 ❯ npm i express express-handlebars express-session method-override mogoose passport passport-local bcryptjs connect-flash
+
+added 84 packages, and audited 85 packages in 11s
+
+1 package is looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+views >> almacena archivos a enviar al navegador, vistas html
+routes >> urls o rutas de nuestro servidor
+public >> insertar archivos estaticos a enviar al navegador para visualizar
+models >> como van a lucir los datos que vamos a almacenar dentro de la BBDD
+helpers >> funciones que el servidor pueda utilizar
+config >> configuraciones 
+
+****** MATAR PUERTOS *******
+npx kill-port 3000 3001
+Process on port 3001 killed
+Process on port 3000 killed
+  master ?:1  ~/Documentos/Global Mentoring Udemy/Javascript/repositorio/JavaScript/notes-app/src                                                           12:20:53  gerardo 
+❯ killall -9 node
+  master ?:1  ~/Documentos/Global Mentoring Udemy/Javascript/repositorio/JavaScript/notes-app/src                                                           12:21:30  gerardo 
+❯ npm run dev
+
+> notes-app@1.0.0 dev
+> nodemon src/index.js
+
+[nodemon] 2.0.7
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node src/index.js`
+Server on port 3000
+
+**** Conexion DB ****
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/notes-db-app', {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useFindAndModify: false
+
+})
+//promesas para ver si la base conecta
+  .then(db => console.log('DB conectada'))
+  .catch(err => {console.log(err)});
+
+en index.js //Inicializacion
+require('./database');
+
+consola:
+❯ npm run dev
+
+> notes-app@1.0.0 dev
+> nodemon src/index.js
+
+[nodemon] 2.0.7
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node src/index.js`
+(node:224142) [MONGODB DRIVER] Warning: Current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Server on port 3000
+DB conectada
+*/

@@ -1,0 +1,56 @@
+const {Router} = require('express');
+const router = Router();
+
+const Note = require('../models/Note.js');
+
+router.get('/notes/add', (req, res) =>{
+    res.render('notes/new-note.hbs');
+    
+});
+
+// ruta especifica para recibir datos
+router.post('/notes/new-note', async (req, res) =>{
+    const { title, description } = req.body;
+    const errors = [];
+    if (!title) {
+      errors.push({ text: "Please Write a Title." });
+    
+    }
+    if (!description) {
+      errors.push({ text: "Please Write a Description" });
+    
+    }
+    if (errors.length > 0) {
+      res.render("notes/new-note", {
+        errors,
+        title,
+        description,
+      
+        });
+    
+    }else{
+        const newNote = new Note({ title, description });
+        newNote.user = req.user.id;
+        await newNote.save();
+
+        res.redirect("/notes");
+    
+    }
+});
+router.get('/notes', async (req, res) =>{
+    await Note.find()
+    .then(documentos => {
+      const contexto = {
+          notes: documentos.map(documento => {
+          return {
+              title: documento.title,
+              description: documento.description
+          }
+        })
+      }
+      res.render('notes/all-notes', {
+notes: contexto.notes }) 
+    })
+});
+
+module.exports = router;

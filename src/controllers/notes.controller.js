@@ -1,5 +1,6 @@
 const notesCtrl = {};
 const Note = require('../models/Note')
+const testUser = '64a32b4cb1645f00fa913e73';
 
 notesCtrl.renderNoteForm = (req, res) => {
     res.render('notes/new-note');
@@ -8,11 +9,30 @@ notesCtrl.renderNoteForm = (req, res) => {
 notesCtrl.createNewNote = async (req, res) => {
     const {title, description}= req.body;
     const newNote = new Note({title, description});
-    newNote.user = req.user?.id ?? 'gerardo.chavez@moove-it.com';
+
+    newNote.user = req.user?.id ?? testUser;
     await newNote.save();
     req.flash('success_msg', 'Note Added Succesfully');
-    //console.log(newNote);
     res.redirect('/notes');
+
+}
+notesCtrl.apiCreateNewNote = async (req, res) => {
+    const {title, description}= req.body;
+    console.log(req.body)
+    if (!title || !description) {
+        return res.status(400).json(
+            { error: 'Se requieren el título y la descripción de la nota.',
+              values: { 
+                "title":title, 
+                "description": description 
+            }
+        });
+    }else{
+        const newNote = new Note({title, description});
+        newNote.user = req.user?.id ?? testUser;
+        await newNote.save();
+        res.status(201).json(newNote);
+    }
 
 }
 notesCtrl.renderNotes = async (req, res) => {
@@ -24,6 +44,7 @@ notesCtrl.renderNotes = async (req, res) => {
 }
 notesCtrl.renderEditForm = async (req, res) => {
     const note = await Note.findById(req.params.id).lean();
+    console.log(note.user, req.user.id);
     if (note.user != req.user.id){
         req.flash('error_msg', 'Not Authorized');
         return res.redirect('/notes')
@@ -48,11 +69,16 @@ notesCtrl.deleteNote = async (req, res) => {
 }
 
 notesCtrl.allNotes = async (req, res) => {
-    const notes = await Note.find({user:req.user?.id ?? 'gerardo.chavez@moove-it.com'})
+    const notes = await Note.find({user:req.user?.id ?? testUser})
                             .sort({createdAt: 'desc'})
                             .lean();
-    res.body({notes});
 
+    res.json({notes});
+    
 }
+notesCtrl.noteById = async (req, res) => {
+    const note = await Note.findById(req.params.id);
+    res.json(note);
 
+};
 module.exports =  notesCtrl;

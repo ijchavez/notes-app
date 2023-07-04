@@ -7,10 +7,12 @@ const {renderNoteForm,
        renderEditForm,
        updateNote,
        deleteNote,
-       allNotes
+       allNotes,
+       apiCreateNewNote,
+       noteById
 } = require('../controllers/notes.controller');
 
-const {isAuthenticated} = require('../helpers/auth');
+const {isAuthenticated, isApiAuthenticated} = require('../helpers/auth');
 
 router.get('/notes/add', isAuthenticated, renderNoteForm)
 
@@ -24,8 +26,9 @@ router.put('/notes/edit/:id', isAuthenticated, updateNote);
 
 router.delete('/notes/delete/:id', isAuthenticated, deleteNote)
 
-router.post('/api/notes/new-note', createNewNote);
+router.post('/api/notes/new-note', isApiAuthenticated, apiCreateNewNote);
 
 router.get('/api/notes/all', allNotes);
 
+router.get('/api/notes/:id', noteById);
 module.exports = router;

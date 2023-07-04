@@ -25,7 +25,8 @@ app.engine('.hbs', exphbs({
 app.set('view engine', '.hbs');
 //MDW
 app.use(morgan("dev"));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(methodOverride('_method'));
 app.use(
     session({
@@ -52,7 +53,6 @@ app.use(require('./routes/notes.routes'));
 app.use(require('./routes/users.routes'));
 // STATIC FILES
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 
 module.exports = app;

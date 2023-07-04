@@ -9,5 +9,8 @@ helpers.isAuthenticated = (req, res, next) =>{
     res.redirect('/users/signin');
 
 }
+helpers.isApiAuthenticated = (req, res, next) =>{
+    return next();
 
+}
 module.exports = helpers;

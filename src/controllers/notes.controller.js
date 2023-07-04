@@ -8,7 +8,7 @@ notesCtrl.renderNoteForm = (req, res) => {
 notesCtrl.createNewNote = async (req, res) => {
     const {title, description}= req.body;
     const newNote = new Note({title, description});
-    newNote.user = req.user.id;
+    newNote.user = req.user?.id ?? 'gerardo.chavez@moove-it.com';
     await newNote.save();
     req.flash('success_msg', 'Note Added Succesfully');
     //console.log(newNote);
@@ -44,6 +44,14 @@ notesCtrl.deleteNote = async (req, res) => {
     await Note.findByIdAndDelete(req.params.id);
     req.flash('success_msg', 'Note Deleted Succesfully');
     res.redirect('/notes');
+
+}
+
+notesCtrl.allNotes = async (req, res) => {
+    const notes = await Note.find({user:req.user?.id ?? 'gerardo.chavez@moove-it.com'})
+                            .sort({createdAt: 'desc'})
+                            .lean();
+    res.body({notes});
 
 }
 

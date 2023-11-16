@@ -15,13 +15,13 @@
         <div class="card-body">
             <form action="/notes/new-note" method='POST'>
                 <div class="form-group">
-                    <input type="text" name = 'title'class='form-control' placeholder="Title" autofocus>
+                    <input type="text" id="title" name ='title'class='form-control' placeholder="Title" autofocus>
                 </div>
                 <div class="form-group">
-                    <textarea name='description' class='form-control' placeholder="Description" placeholder = 'Description'></textarea>
+                    <textarea name='description' id="description" class='form-control' placeholder="Description" placeholder = 'Description'></textarea>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary btn-block">Save</button>
+                    <button id="save" class="btn btn-primary btn-block">Save</button>
                 </div>
             </form>
         </div>

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
+const { SECRET } = require("../config");
 const User = require("../models/User");
-const secret = "zat71gpnWLz9+o9R7wcceHeqQ5YLIiddaU3Mq5voChs=";
 
 const authCtrl = {};
 
@@ -12,7 +12,7 @@ authCtrl.signIn = async (req, res) => {
     return res.status(401).json({ message: "Invalid email or password" });
   }
 
-  const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" });
+  const token = jwt.sign({ id: user._id }, SECRET, { expiresIn: "1h" });
 
   res.json({ token });
 };

@@ -10,11 +10,6 @@ const {
   deleteNote,
   allNotes,
   noteById,
-  apiCreateNewNote,
-  apiAllNotes,
-  apiNoteById,
-  apiUpdateNote,
-  apiDeleteNote,
 } = require("../controllers/notes.controller");
 
 const { isAuthenticated, isApiAuthenticated } = require("../helpers/auth");
@@ -96,11 +91,5 @@ router.get(
   },
   noteById
 );
-
-router.post("/api/notes/new-note", isApiAuthenticated, apiCreateNewNote);
-router.get("/api/notes/all", isApiAuthenticated, apiAllNotes);
-router.get("/api/notes/:id", isApiAuthenticated, apiNoteById);
-router.put("/api/notes/edit/:id", isApiAuthenticated, apiUpdateNote);
-router.delete("/api/notes/delete/:id", isApiAuthenticated, apiDeleteNote);
 
 module.exports = router;

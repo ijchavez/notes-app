@@ -1,7 +1,6 @@
 const notesCtrl = {};
 const Note = require("../models/Note");
 const validations = require("../helpers/validations");
-const testUser = "64a32b4cb1645f00fa913e73";
 
 notesCtrl.renderNoteForm = (req, res) => {
   res.render("notes/new-note");
@@ -65,7 +64,7 @@ notesCtrl.deleteNote = async (req, res) => {
 };
 
 notesCtrl.allNotes = async (req, res) => {
-  const notes = await Note.find({ user: req.user?.id ?? testUser })
+  const notes = await Note.find({ user: req.user?.id })
     .sort({ createdAt: "desc" })
     .lean();
 

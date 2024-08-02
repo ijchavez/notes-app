@@ -19,11 +19,24 @@ notesApiCtrl.apiCreateNewNote = async (req, res) => {
 
 notesApiCtrl.apiAllNotes = async (req, res) => {
   try {
-    const notes = await Note.find({ user: req.user?.id })
+    if (!req.user) {
+      console.log("User not authenticated");
+      return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    console.log("User ID:", req.user.id);
+
+    const notes = await Note.findAll({ user: req.user.id })
       .sort({ createdAt: "desc" })
       .lean();
+    console.log(notes);
+    if (!notes) {
+      return res.status(404).json({ error: "No notes found" });
+    }
+
     res.status(200).json({ notes });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };

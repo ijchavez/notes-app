@@ -49,9 +49,6 @@ app.use(flash());
 
 // GLOBAL VARIABLES
 app.use((req, res, next) => {
-  if (req.user) {
-    console.log(req.user.name + "==================="); // Aquí haces el console.log de req.user
-  }
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
   res.locals.error = req.flash("error");

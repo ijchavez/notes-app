@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const secret = "zat71gpnWLz9+o9R7wcceHeqQ5YLIiddaU3Mq5voChs=";
+const { SECRET } = require("../config");
 
 const helpers = {};
 
@@ -21,7 +21,7 @@ helpers.isApiAuthenticated = (req, res, next) => {
     return res.status(403).json({ message: "No token provided." });
   }
 
-  jwt.verify(token, secret, (err, decoded) => {
+  jwt.verify(token, SECRET, (err, decoded) => {
     if (err) {
       return res.status(500).json({ message: "Failed to authenticate token." });
     }

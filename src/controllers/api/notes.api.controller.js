@@ -20,35 +20,41 @@ notesApiCtrl.apiCreateNewNote = async (req, res) => {
 notesApiCtrl.apiAllNotes = async (req, res) => {
   try {
     if (!req.user) {
-      console.log("User not authenticated");
+      //console.log("User not authenticated");
       return res.status(401).json({ error: "User not authenticated" });
     }
 
     console.log("User ID:", req.user.id);
 
-    const notes = await Note.findAll({ user: req.user.id })
+    const notes = await Note.find({ user: req.user.id })
       .sort({ createdAt: "desc" })
       .lean();
-    console.log(notes);
-    if (!notes) {
+    //console.log("Notes retrieved:", notes);
+
+    if (!notes || notes.length === 0) {
       return res.status(404).json({ error: "No notes found" });
     }
 
     res.status(200).json({ notes });
   } catch (err) {
-    console.error(err);
+    console.error("Error in apiAllNotes:", err);
     res.status(500).json({ error: err.message });
   }
 };
 
 notesApiCtrl.apiNoteById = async (req, res) => {
   try {
+    //console.log("Finding note with ID:", req.params.id);
     const note = await Note.findById(req.params.id);
+    //console.log("Note found:", note);
+
     if (!note) {
       return res.status(404).json({ error: "Note not found" });
     }
+
     res.status(200).json(note);
   } catch (err) {
+    console.error("Error in apiNoteById:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -72,6 +78,7 @@ notesApiCtrl.apiUpdateNote = async (req, res) => {
     }
     res.status(200).json(updatedNote);
   } catch (err) {
+    console.error("Error in apiUpdateNote:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -82,8 +89,10 @@ notesApiCtrl.apiDeleteNote = async (req, res) => {
     if (!deletedNote) {
       return res.status(404).json({ error: "Note not found" });
     }
+
     res.status(200).json({ message: "Note Deleted Successfully" });
   } catch (err) {
+    console.error("Error in apiDeleteNote:", err);
     res.status(500).json({ error: err.message });
   }
 };

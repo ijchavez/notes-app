@@ -12,7 +12,7 @@ const {
   noteById,
 } = require("../controllers/notes.controller");
 
-const { isAuthenticated, isApiAuthenticated } = require("../helpers/auth");
+const { isAuthenticated } = require("../helpers/auth");
 
 router.get(
   "/notes/add",
@@ -75,18 +75,18 @@ router.delete(
 );
 
 router.get(
-  "/api/notes/all",
+  "/notes/all",
   (req, res, next) => {
-    console.log("GET /api/notes/all");
+    console.log("GET /notes/all");
     next();
   },
   allNotes
 );
 
 router.get(
-  "/api/notes/:id",
+  "/notes/:id",
   (req, res, next) => {
-    console.log("GET /api/notes/:id");
+    console.log("GET /notes/:id");
     next();
   },
   noteById

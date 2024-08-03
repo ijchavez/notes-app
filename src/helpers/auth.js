@@ -23,10 +23,12 @@ helpers.isApiAuthenticated = (req, res, next) => {
 
   jwt.verify(token, SECRET, (err, decoded) => {
     if (err) {
+      console.log("Token verification failed:", err);
       return res.status(500).json({ message: "Failed to authenticate token." });
     }
 
     req.user = { id: decoded.id };
+    console.log("Token verified, user ID:", req.user.id);
     next();
   });
 };

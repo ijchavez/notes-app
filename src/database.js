@@ -5,7 +5,7 @@ mongoose
   .connect(MONGODB_URI, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    //para sortear el deprecation userCreateIndex
+    useFindAndModify: false,
     useCreateIndex: true,
   })
   .then((db) => console.log("DB conectada " + db.connection.name))

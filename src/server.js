@@ -61,7 +61,9 @@ app.use(require("./routes/index.routes"));
 app.use(require("./routes/notes.routes"));
 app.use(require("./routes/users.routes"));
 app.use(require("./routes/auth.routes"));
+
 app.use("/api/notes", require("./routes/api/notes.api.routes"));
+app.use("/api/users", require("./routes/api/users.api.routes"));
 
 // STATIC FILES
 app.use(express.static(path.join(__dirname, "public")));

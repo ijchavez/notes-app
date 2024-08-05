@@ -1,72 +1,75 @@
 const usersCtrl = {};
-const User = require('../models/User');
-const passport = require('passport');
+const passport = require("passport");
+const validations = require("../helpers/validations");
+const {
+  findUserByEmail,
+  registerNewUser,
+} = require("../helpers/users.helpers");
 
-usersCtrl.renderSignUpForm = (req, res) =>{
-    res.render('users/signup');
+usersCtrl.renderSignUpForm = (req, res) => {
+  res.render("users/signup");
+};
+/**
+ * Registers a new user.
+ *
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ *
+ * @returns {Promise<void>}
+ */
+usersCtrl.signup = async (req, res) => {
+  const { name, email, password, confirm_password } = req.body;
 
-}
-usersCtrl.signup = async (req, res) =>{
-    let errors = [];
-    const{name,
-          email,
-          password,
-          confirm_password
-    } = req.body;
-    if (password != confirm_password) {
-        errors.push({ text: "Passwords do not match." });
-    
-    }
-    if (password.length < 4) {
-        errors.push({ text: "Passwords must be at least 4 characters." });
-    
-    }
-    if(errors.length > 0){
-        res.render('users/signup', {
-            errors,
-            name,
-            email,
-            password,
-            confirm_password
-        });
-    }else{
-        const emailUser = await User.findOne({ email: email});
-        if(emailUser){
-            req.flash('error_msg', "The mail is alredy in use");
-            res.redirect('signup');
+  const errors = validations.validateSignupFields(
+    name,
+    email,
+    password,
+    confirm_password
+  );
+  if (errors.length > 0) {
+    return res.render("users/signup", {
+      errors,
+      name,
+      email,
+      password,
+      confirm_password,
+    });
+  }
 
-        }else{
-            const newUser = new User({
-                name,
-                email,
-                password
+  const emailUser = await findUserByEmail(email);
+  if (emailUser) {
+    req.flash("error_msg", "The email is already in use");
+    return res.redirect("signup");
+  }
 
-            })
-            newUser.password = await newUser.encryptPassword(password);
-            await newUser.save();
-            req.flash('success_msg','Succesfully Registered')
-            res.redirect('signin');
-        }
-
-    }
-
-}
+  const newUser = await registerNewUser(name, email, password);
+  req.flash("success_msg", "Successfully Registered");
+  res.redirect("signin");
+};
 usersCtrl.signin = passport.authenticate("local", {
-    successRedirect: "/notes",
-    failureRedirect: "/users/signin",
-    failureFlash: true,
-  });
+  successRedirect: "/notes",
+  failureRedirect: "/users/signin",
+  failureFlash: true,
+});
 
-
-usersCtrl.renderSigninForm = (req, res) =>{
-    res.render('users/signin');
-
+usersCtrl.renderSigninForm = (req, res) => {
+  res.render("users/signin");
+};
+usersCtrl.logout = (req, res) => {
+  req.logout();
+  req.flash("success_msg", "You are logged out");
+  res.redirect("signin");
+};
+/*
+usersCtrl.logout = (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            return next(err);
+        }
+        req.flash('success_msg', 'You are logged out');
+        res.redirect('signin');
+    });
 }
-usersCtrl.logout = (req, res) =>{
-    req.logout();
-    req.flash('success_msg','You are logged out');
-    res.redirect('signin');
-
-}
+*/
 
 module.exports = usersCtrl;

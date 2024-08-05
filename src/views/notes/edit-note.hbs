@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="col-md-4 mx-auto">
+  <div class="col-md-8 mx-auto">
     <div class="card">
       <div class="card-header">
         <h3 class="text-center">Edit Note</h3>
@@ -19,12 +19,17 @@
             <textarea
               name="description"
               class="form-control"
+              style="height: 100px;"
             >{{note.description}}</textarea>
           </div>
           <div class="form-group">
-            <button class="btn btn-primary btn-block" type="submit">
+            <button id="save" class="btn btn-primary btn-block" type="submit">
               SAVE
             </button>
+          </div>
+          <div class="form-group">
+            <a href="/notes" class="btn btn-secondary btn-block">Cancel</a>
+            {{!<a href="/" class="btn btn-secondary btn-block">Cancel</a> }}
           </div>
         </form>
       </div>

@@ -43,8 +43,10 @@ notesCtrl.renderEditForm = async (req, res) => {
 notesCtrl.updateNote = async (req, res) => {
   const { title, description } = req.body;
   const errors = validations.validateNote(title, description);
+  console.log(title, description);
 
   if (errors.length > 0) {
+    console.log(note);
     const note = await Note.findById(req.params.id).lean();
     return res.render("notes/edit-note", {
       errors,

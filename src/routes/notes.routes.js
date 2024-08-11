@@ -1,34 +1,95 @@
-const {Router} = require('express');
+const { Router } = require("express");
 const router = Router();
 
-const {renderNoteForm,
-       createNewNote,
-       renderNotes,
-       renderEditForm,
-       updateNote,
-       deleteNote,
-       allNotes,
-       apiCreateNewNote,
-       noteById
-} = require('../controllers/notes.controller');
+const {
+  renderNoteForm,
+  createNewNote,
+  renderNotes,
+  renderEditForm,
+  updateNote,
+  deleteNote,
+  allNotes,
+  noteById,
+} = require("../controllers/notes.controller");
 
-const {isAuthenticated, isApiAuthenticated} = require('../helpers/auth');
+const { isAuthenticated } = require("../helpers/auth");
 
-router.get('/notes/add', isAuthenticated, renderNoteForm)
+router.get(
+  "/notes/add",
+  isAuthenticated,
+  (req, res, next) => {
+    console.log("GET /notes/add");
+    next();
+  },
+  renderNoteForm
+);
 
-router.post('/notes/new-note', isAuthenticated, createNewNote);
+router.post(
+  "/notes/new-note",
+  isAuthenticated,
+  (req, res, next) => {
+    console.log("POST /notes/new-note");
+    next();
+  },
+  createNewNote
+);
 
-router.get('/notes', isAuthenticated, renderNotes);
+router.get(
+  "/notes",
+  isAuthenticated,
+  (req, res, next) => {
+    console.log("GET /notes");
+    next();
+  },
+  renderNotes
+);
 
-router.get('/notes/edit/:id', isAuthenticated, renderEditForm);
+router.get(
+  "/notes/edit/:id",
+  isAuthenticated,
+  (req, res, next) => {
+    console.log("GET /notes/edit/:id");
+    next();
+  },
+  renderEditForm
+);
 
-router.put('/notes/edit/:id', isAuthenticated, updateNote);
+router.put(
+  "/notes/edit/:id",
+  isAuthenticated,
+  (req, res, next) => {
+    console.log("PUT /notes/edit/:id");
+    next();
+  },
+  updateNote
+);
 
-router.delete('/notes/delete/:id', isAuthenticated, deleteNote)
+router.delete(
+  "/notes/delete/:id",
+  isAuthenticated,
+  (req, res, next) => {
+    console.log("DELETE /notes/delete/:id");
+    next();
+  },
+  deleteNote
+);
 
-router.post('/api/notes/new-note', isApiAuthenticated, apiCreateNewNote);
+router.get(
+  "/notes/all",
+  (req, res, next) => {
+    console.log("GET /notes/all");
+    next();
+  },
+  allNotes
+);
 
-router.get('/api/notes/all', allNotes);
+router.get(
+  "/notes/:id",
+  (req, res, next) => {
+    console.log("GET /notes/:id");
+    next();
+  },
+  noteById
+);
 
-router.get('/api/notes/:id', noteById);
 module.exports = router;

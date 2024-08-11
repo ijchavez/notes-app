@@ -30,7 +30,6 @@ setBackendRoutes(app);
 
 // STATIC FILES
 setStaticFiles(app);
-render404(app);
 render500(app); //esto renderiza el error de una manera mas amigable
 
 module.exports = app;

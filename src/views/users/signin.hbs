@@ -1,39 +1,34 @@
-<div class="row">
-  <div class="col-md-4 mx-auto">
-    <div class="card">
-      <div class="card-header">
-        Account Login
+<div
+  class="card mx-auto"
+  style="max-width: 90%; max-height: 90vh; overflow-y: auto;"
+>
+  <div class="card-header">
+    Account Login
+  </div>
+  <img src="/images/notes.jpeg" class="logo d-block mx-auto" alt="notes" />
+  <div class="card-body">
+    <form class="form-group" action="/users/signin" method="POST">
+      <div class="form-group">
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          name="email"
+          placeholder="Email"
+        />
       </div>
-      <img
-        src="/images/notes.png"
-        class="rounded-circle mx-auto d-block m-4 logo"
-        alt="notes"
-      />
-      <div class="card-body">
-        <form action="/users/signin" method="POST">
-          <div class="form-group">
-            <input
-              id="email"
-              type="email"
-              class="form-control"
-              name="email"
-              placeholder="Email"
-            />
-          </div>
-          <div class="form-group">
-            <input
-              id="password"
-              type="password"
-              class="form-control"
-              name="password"
-              placeholder="Password"
-            />
-          </div>
-          <button id="signin" class="btn btn-primary btn-block">
-            Signin
-          </button>
-        </form>
+      <div class="form-group">
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          name="password"
+          placeholder="Password"
+        />
       </div>
-    </div>
+      <button id="signin" class="btn btn-primary btn-block">
+        Signin
+      </button>
+    </form>
   </div>
 </div>

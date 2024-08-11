@@ -46,7 +46,6 @@ notesCtrl.updateNote = async (req, res) => {
   console.log(title, description);
 
   if (errors.length > 0) {
-    console.log(note);
     const note = await Note.findById(req.params.id).lean();
     return res.render("notes/edit-note", {
       errors,

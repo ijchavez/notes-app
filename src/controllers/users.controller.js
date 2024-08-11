@@ -55,21 +55,20 @@ usersCtrl.signin = passport.authenticate("local", {
 usersCtrl.renderSigninForm = (req, res) => {
   res.render("users/signin");
 };
-usersCtrl.logout = (req, res) => {
+/* usersCtrl.logout = (req, res) => {
   req.logout();
   req.flash("success_msg", "You are logged out");
   res.redirect("signin");
-};
-/*
+}; */
+
 usersCtrl.logout = (req, res) => {
-    req.logout((err) => {
-        if (err) {
-            return next(err);
-        }
-        req.flash('success_msg', 'You are logged out');
-        res.redirect('signin');
-    });
-}
-*/
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.flash("success_msg", "You are logged out");
+    res.redirect("signin");
+  });
+};
 
 module.exports = usersCtrl;

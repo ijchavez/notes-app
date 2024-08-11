@@ -1,71 +1,36 @@
 const express = require("express");
-const exphbs = require("express-handlebars");
-const path = require("path");
-const morgan = require("morgan");
-const methodOverride = require("method-override");
-const flash = require("connect-flash");
-const passport = require("passport");
-const session = require("express-session");
+
 const {
-  allowInsecurePrototypeAccess,
-} = require("@handlebars/allow-prototype-access");
-const Handlebars = require("handlebars");
-const { PORT } = require("./config");
+  appSettings,
+  appMiddlewares,
+  setGlovalVariables,
+  setFrontEndRoutes,
+  setBackendRoutes,
+  setStaticFiles,
+  render404,
+  render500,
+} = require("./expressApp");
 
 // INIT
 const app = express();
 require("./config/passport");
 
 // SETTINGS
-app.set("port", PORT || 3000);
-app.set("views", path.join(__dirname, "views"));
-app.engine(
-  ".hbs",
-  exphbs({
-    defaultLayout: "main",
-    layoutsDir: path.join(app.get("views"), "layouts"),
-    partialsDir: path.join(app.get("views"), "partials"),
-    extname: ".hbs",
-    handlebars: allowInsecurePrototypeAccess(Handlebars),
-  })
-);
-app.set("view engine", ".hbs");
+appSettings(app);
 
 // MIDDLEWARES
-app.use(morgan("dev"));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(methodOverride("_method"));
-app.use(
-  session({
-    secret: "secret",
-    resave: true,
-    saveUninitialized: true,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
+appMiddlewares(app);
 
 // GLOBAL VARIABLES
-app.use((req, res, next) => {
-  res.locals.success_msg = req.flash("success_msg");
-  res.locals.error_msg = req.flash("error_msg");
-  res.locals.error = req.flash("error");
-  res.locals.user = req.user || null;
-  next();
-});
+setGlovalVariables(app);
 
 // ROUTES
-app.use(require("./routes/index.routes"));
-app.use(require("./routes/notes.routes"));
-app.use(require("./routes/users.routes"));
-app.use(require("./routes/auth.routes"));
-
-app.use("/api/notes", require("./routes/api/notes.api.routes"));
-app.use("/api/users", require("./routes/api/users.api.routes"));
+setFrontEndRoutes(app);
+setBackendRoutes(app);
 
 // STATIC FILES
-app.use(express.static(path.join(__dirname, "public")));
+setStaticFiles(app);
+render404(app);
+render500(app); //esto renderiza el error de una manera mas amigable
 
 module.exports = app;

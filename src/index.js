@@ -1,8 +1,10 @@
-require('dotenv').config();
-const app = require('./server');
-require('./database');
+require("dotenv").config();
+const { listen } = require("./expressApp");
+const app = require("./server");
+require("./config/database");
 
-app.listen(app.get('port'), () =>{
-    console.log('server on port:', app.get('port'));
-
-})
+listen(app);
+//- en new notes estan los errores comentados SCRUM-13
+//- en edit notes esta comentado la redireccion a / en vez de /notes SCRUM-35
+//- en https://new-notes-app.fly.dev/ agregas una nota vacia y estalla SCRUM-13
+//logout falla en new-new-notes

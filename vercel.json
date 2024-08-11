@@ -1,10 +1,31 @@
 {
-   "version": 2,
-   "name": "notes-app",
-   "builds": [
-      { "src": "server.js", "use": "@vercel/node" }
-   ],
-   "routes": [
-      { "src": "/(.*)", "dest": "/server.js" }
-   ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/auth(.*)",
+      "dest": "/src/routes/auth.routes.js"
+    },
+    {
+      "src": "/api/notes(.*)",
+      "dest": "/src/routes/notes.routes.js"
+    },
+    {
+      "src": "/api/users(.*)",
+      "dest": "/src/routes/users.routes.js"
+    },
+    {
+      "src": "/api(.*)",
+      "dest": "/src/routes/index.routes.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/src/index.js"
+    }
+  ]
 }

@@ -1,12 +1,11 @@
 const express = require("express");
-
+const { setSwagger } = require("./expressApp");
 const {
   appSettings,
   appMiddlewares,
-  setGlovalVariables,
-  setFrontEndRoutes,
   setBackendRoutes,
   setStaticFiles,
+  setSpaRoutes,
   render404,
   render500,
 } = require("./expressApp");
@@ -21,16 +20,16 @@ appSettings(app);
 // MIDDLEWARES
 appMiddlewares(app);
 
-// GLOBAL VARIABLES
-setGlovalVariables(app);
-
-// ROUTES
-setFrontEndRoutes(app);
+// API ROUTES
 setBackendRoutes(app);
+setSwagger(app);
 
-// STATIC FILES
+// STATIC FILES + SPA
 setStaticFiles(app);
+setSpaRoutes(app);
+
+// ERRORS
 render404(app);
-render500(app); //esto renderiza el error de una manera mas amigable
+render500(app);
 
 module.exports = app;

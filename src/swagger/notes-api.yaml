@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: Notas API
+  version: 1.0.0
+  description: API para gestionar notas y usuarios en una aplicación personal.
+servers:
+- url: http://localhost:3000/api
+  description: Local server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    SignupInput:
+      type: object
+      required:
+      - name
+      - email
+      - password
+      - confirm_password
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        confirm_password:
+          type: string
+    SigninInput:
+      type: object
+      required:
+      - email
+      - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    NoteInput:
+      type: object
+      required:
+      - title
+      - description
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+    Note:
+      allOf:
+      - $ref: '#/components/schemas/NoteInput'
+      - type: object
+        properties:
+          _id:
+            type: string
+          user:
+            type: string
+          createdAt:
+            type: string
+            format: date-time
+          updatedAt:
+            type: string
+            format: date-time
+paths:
+  /notes/new-note:
+    post:
+      tags:
+      - Notes
+      summary: Crear una nueva nota
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteInput'
+      responses:
+        201:
+          description: Nota creada exitosamente
+        400:
+          description: Error de validación
+        403:
+          description: No token provided
+  /notes/all:
+    get:
+      tags:
+      - Notes
+      summary: Obtener todas las notas del usuario autenticado
+      security:
+      - bearerAuth: []
+      responses:
+        200:
+          description: Lista de notas
+        401:
+          description: Usuario no autenticado
+        404:
+          description: No se encontraron notas
+  /notes/{id}:
+    get:
+      tags:
+      - Notes
+      summary: Obtener una nota por su ID
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID de la nota
+      responses:
+        200:
+          description: Nota encontrada
+        404:
+          description: Nota no encontrada
+  /notes/edit/{id}:
+    put:
+      tags:
+      - Notes
+      summary: Editar una nota existente
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID de la nota
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NoteInput'
+      responses:
+        200:
+          description: Nota actualizada exitosamente
+        400:
+          description: Error de validación
+        404:
+          description: Nota no encontrada
+  /notes/delete/{id}:
+    delete:
+      tags:
+      - Notes
+      summary: Eliminar una nota por su ID
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: ID de la nota
+      responses:
+        200:
+          description: Nota eliminada exitosamente
+        404:
+          description: Nota no encontrada
+  /users/register:
+    post:
+      tags:
+      - Auth
+      summary: Registrar un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupInput'
+      responses:
+        201:
+          description: Usuario registrado con éxito
+        400:
+          description: Datos inválidos o email en uso
+  /auth/signin:
+    post:
+      tags:
+      - Auth
+      summary: Iniciar sesión con credenciales de usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SigninInput'
+      responses:
+        200:
+          description: Inicio de sesión exitoso, devuelve token
+        400:
+          description: Credenciales inválidas
+        500:
+          description: Error interno del servidor
